@@ -31,10 +31,6 @@ dayjs.locale("ja");
 //storeの作成
 const store = createStore(rootReducer);
 
-/* function signOut() {
-  Auth.signOut()
-} */
-
 const App = () => (
   <AmplifyAuthenticator>
   <Provider store={store}>
@@ -49,17 +45,7 @@ const App = () => (
     </MuiPickersUtilsProvider>
   </Provider>
   </AmplifyAuthenticator>
-  
 );
-
-
-
-/* const App = () => (
-  <div>
-    <CalendarBoard />
-  </div>
-); */
-
 
 //export default withAuthenticator(App);
 ReactDOM.render(<App />, document.getElementById("root"));
