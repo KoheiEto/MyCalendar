@@ -1,6 +1,6 @@
 import logo from './logo.svg';
-//import './App.css';
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import './App.css';
+import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator } from '@aws-amplify/ui-react'
 
 
 import React from "react";
@@ -19,7 +19,8 @@ import CurrentScheduleDialog from "./components/CurrentScheduleDialog/container"
 
 import DayjsUtils from "@date-io/dayjs";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import Amplify from 'aws-amplify';
+
+import Amplify, {Auth} from 'aws-amplify';
 import config from './aws-exports';
 Amplify.configure(config);
 
@@ -30,12 +31,15 @@ dayjs.locale("ja");
 //storeの作成
 const store = createStore(rootReducer);
 
+/* function signOut() {
+  Auth.signOut()
+} */
+
 const App = () => (
+  <AmplifyAuthenticator>
   <Provider store={store}>
-    <div>
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1>We now have Auth!</h1>
-    </div>
+    <img src={logo} className="App-logo" alt="logo" />
+    <h1>We now have Auth!</h1>
     <AmplifySignOut />
     <MuiPickersUtilsProvider utils={DayjsUtils}>
       <Navigation />
@@ -44,6 +48,8 @@ const App = () => (
       <CurrentScheduleDialog /> 
     </MuiPickersUtilsProvider>
   </Provider>
+  </AmplifyAuthenticator>
+  
 );
 
 
@@ -53,5 +59,7 @@ const App = () => (
     <CalendarBoard />
   </div>
 ); */
-export default withAuthenticator(App);
+
+
+//export default withAuthenticator(App);
 ReactDOM.render(<App />, document.getElementById("root"));
