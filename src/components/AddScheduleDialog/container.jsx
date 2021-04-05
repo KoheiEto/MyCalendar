@@ -6,6 +6,18 @@ import {
 } from "../../redux/addSchedule/actions";
 import { schedulesAddItem } from "../../redux/schedules/actions";
 
+
+
+import API, { graphqlOperation } from '@aws-amplify/api';
+import PubSub from '@aws-amplify/pubsub';
+import { createTodo } from '../../graphql/mutations';
+
+import awsconfig from '../../aws-exports';
+
+API.configure(awsconfig);
+PubSub.configure(awsconfig);
+
+
 const mapStateToProps = state => ({ schedule: state.addSchedule });
 
 const mapDispatchToProps = dispatch => ({
@@ -18,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
   saveSchedule: schedule => {
     dispatch(schedulesAddItem(schedule));
     dispatch(addScheduleCloseDialog());
+
   },
 });
 
@@ -29,6 +42,10 @@ const mergeProps = (stateProps, dispatchProps) => ({
       schedule: { form: schedule }
     } = stateProps;
     dispatchProps.saveSchedule(schedule);
+    //console.log(schedule);
+    //dbにデータ送信
+    const todo = { title: schedule.title, description: schedule.description, date: schedule.date,location: schedule.location };
+    API.graphql(graphqlOperation(createTodo, { input: todo }));
   }
 });
 

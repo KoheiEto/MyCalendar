@@ -16,5 +16,23 @@
         "mycalendardb5f04a7": {}
       }
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mycalendar-dev-153843-authRole",
+      "UnauthRoleArn": "arn:aws:iam::382473551137:role/amplify-mycalendar-dev-153843-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::382473551137:role/amplify-mycalendar-dev-153843-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mycalendar-dev-153843-deployment",
+      "UnauthRoleName": "amplify-mycalendar-dev-153843-unauthRole",
+      "StackName": "amplify-mycalendar-dev-153843",
+      "StackId": "arn:aws:cloudformation:us-east-1:382473551137:stack/amplify-mycalendar-dev-153843/92167800-95d9-11eb-a4b9-0e29088293c9",
+      "AmplifyAppId": "d2bybz078p109c"
+    },
+    "categories": {
+      "auth": {
+        "mycalendardb5f04a7": {}
+      }
+    }
   }
 }

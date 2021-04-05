@@ -44,7 +44,7 @@ const App = () => (
       <CurrentScheduleDialog /> 
     </MuiPickersUtilsProvider>
   </Provider>
-  </AmplifyAuthenticator>
+   </AmplifyAuthenticator> 
 );
 
 //export default withAuthenticator(App);
