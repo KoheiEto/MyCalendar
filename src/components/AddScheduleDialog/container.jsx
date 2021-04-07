@@ -13,9 +13,12 @@ import PubSub from '@aws-amplify/pubsub';
 import { createTodo } from '../../graphql/mutations';
 
 import awsconfig from '../../aws-exports';
+import dayjs from "dayjs";
 
 API.configure(awsconfig);
 PubSub.configure(awsconfig);
+
+
 
 
 const mapStateToProps = state => ({ schedule: state.addSchedule });
@@ -34,17 +37,18 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const mergeProps = (stateProps, dispatchProps) => ({
+const mergeProps =  (stateProps, dispatchProps) => ({
   ...stateProps,
   ...dispatchProps,
-  saveSchedule: () => {
+   saveSchedule: () => {
     const {
       schedule: { form: schedule }
     } = stateProps;
     dispatchProps.saveSchedule(schedule);
     //console.log(schedule);
     //dbにデータ送信
-    const todo = { title: schedule.title, description: schedule.description, date: schedule.date,location: schedule.location };
+    const todo = { title: schedule.title, description: schedule.description, date: schedule.date, location: schedule.location };
+    //console.log(todo);
     API.graphql(graphqlOperation(createTodo, { input: todo }));
   }
 });

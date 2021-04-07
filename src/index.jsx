@@ -1,3 +1,7 @@
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+
+
 import logo from './logo.svg';
 import './App.css';
 import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator } from '@aws-amplify/ui-react'
@@ -6,7 +10,7 @@ import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator } from '@aws-am
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+
 //import CalendarBoard from "./components/CalendarBoard/presentation";
 import CalendarBoard from "./components/CalendarBoard/container"
 import dayjs from "dayjs";
@@ -16,6 +20,7 @@ import rootReducer from "./redux/rootReducer";
 import Navigation from "./components/Navigation/container";
 import AddScheduleDialog from "./components/AddScheduleDialog/container";
 import CurrentScheduleDialog from "./components/CurrentScheduleDialog/container"
+import AuthStateApp from "./AuthStateApp";
 
 import DayjsUtils from "@date-io/dayjs";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -26,17 +31,51 @@ Amplify.configure(config);
 
 
 
+
 dayjs.locale("ja");
 
+const {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+} = require('amazon-cognito-identity-js');
+
+//const config = require('./config');
+
+const userPool = new CognitoUserPool({
+  UserPoolId: "us-east-1_2kauFi5ms",
+  ClientId: "3bdrp1085v9mchis7b71nj5uu3",
+});
+
+const cognitoUser = new CognitoUser({
+  Username: "kohei",
+  Pool: userPool,
+});
+
+const authenticationDetails = new AuthenticationDetails({
+  Username: "kohei",
+  Password: "12121Sui",
+});
+
+cognitoUser.authenticateUser(authenticationDetails, {
+  onSuccess(result) {
+    const token = result.getIdToken().getJwtToken();
+    console.log(result);
+  },
+
+  onFailure(err) {
+    console.error(err);
+  },
+});
+
+
 //storeの作成
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const App = () => (
-  <AmplifyAuthenticator>
+  
   <Provider store={store}>
-    <img src={logo} className="App-logo" alt="logo" />
-    <h1>We now have Auth!</h1>
-    <AmplifySignOut />
+    <AuthStateApp />
     <MuiPickersUtilsProvider utils={DayjsUtils}>
       <Navigation />
       <CalendarBoard />
@@ -44,7 +83,7 @@ const App = () => (
       <CurrentScheduleDialog /> 
     </MuiPickersUtilsProvider>
   </Provider>
-   </AmplifyAuthenticator> 
+   
 );
 
 //export default withAuthenticator(App);

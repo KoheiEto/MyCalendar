@@ -1,9 +1,10 @@
-import React from "react";
+//import React from "react";
 import CalendarElement from "../CalendarElement";
 //import { createCalendar } from "../../services/calendar";
 import { GridList, Typography } from "@material-ui/core";
 //import { addScheduleOpenDialog } from "../../redux/addSchedule/actions";
 import styles from "./styles.css";
+import React, { useEffect } from "react";
 
 //表示にのみ責任をもつコンポーネント
 
@@ -16,8 +17,14 @@ const CalendarBoard = ({
   month, 
   openAddScheduleDialog,
   openCurrentScheduleDialog,
+  fetchSchedule,
 }) => {
     //console.log(calendar);
+    useEffect(() => {
+      // 初回のみdataを取得する
+      //console.log("okkkk");
+      fetchSchedule();
+    }, []);
   return (
     <div className="container">
       <GridList className="grid" cols={7} spacing={0} cellHeight="auto">
